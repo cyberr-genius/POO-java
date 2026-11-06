@@ -1,4 +1,4 @@
-public class Document {
+public abstract class Document {
     private final int numero; // Identifiant unique et immuable
     private String titre; // titre du document
     private Auteur auteur; //auteur du document 
