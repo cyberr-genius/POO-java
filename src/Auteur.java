@@ -1,33 +1,27 @@
+import java.util.Objects;
+
 public class Auteur {
-    private final int identifiant; // Identifiant unique  immuable
-    private String nom; //  nom de l'auteur du document 
-    private String prenom; //prenom de l'auteur du document 
-    private String mail; //mail de l'auteur du document 
+    private final int id;
+    private String nom;
+    private String prenom;
 
-     //Constructeur d'initialisation de l'objet Auteur.     
-    public Auteur(int identifiant, String nom, String prenom, String mail) {
+    public Auteur(int id, String nom, String prenom) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("L'identifiant de l'auteur doit etre positif.");
+        }
         if (nom == null || nom.trim().isEmpty()) {
-            throw new IllegalArgumentException("Le nom de l'auteur ne peut pas être vide.");
+            throw new IllegalArgumentException("Le nom de l'auteur ne peut pas etre vide.");
         }
-        this.identifiant = identifiant;
+        if (prenom == null || prenom.trim().isEmpty()) {
+            throw new IllegalArgumentException("Le prenom de l'auteur ne peut pas etre vide.");
+        }
+        this.id = id;
         this.nom = nom;
-
-        if (prenom != null) {
-            this.prenom = prenom;
-        } else {
-            this.prenom = "";
-        }
-
-        if (mail != null) {
-            this.mail = mail;
-        } else {
-            this.mail = "";
-        }
+        this.prenom = prenom;
     }
 
-    // Accesseurs (getters)
-    public int getIdentifiant() {
-        return identifiant;
+    public int getId() {
+        return id;
     }
 
     public String getNom() {
@@ -38,17 +32,21 @@ public class Auteur {
         return prenom;
     }
 
-    public String getMail() {
-        return mail;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Auteur auteur = (Auteur) o;
+        return id == auteur.id;
     }
 
-    // description de l'auteur 
-    public void afficher() {
-        System.out.println(this.toString());
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "Auteur [ID=" + identifiant + ", Nom=" + nom + " " + prenom + ", Mail=" + mail + "]";
+        return prenom + " " + nom + " (ID: " + id + ")";
     }
 }
