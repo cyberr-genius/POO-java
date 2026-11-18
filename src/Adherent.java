@@ -1,32 +1,24 @@
+import java.util.Objects;
+
 public class Adherent {
-    private final int identifiant; // Identifiant unique  immuable
-    private String nom; //nom de l'adherent
-    private String prenom; //prenom de l'adherent
-    private String mail; //mail de l'adherent
-    
-    // Constructeur de la classe Adherent.
-    public Adherent(int identifiant, String nom, String prenom, String mail) {
-        if (nom == null || nom.trim().isEmpty()) {
-            throw new IllegalArgumentException("Le nom de l'adhérent ne peut pas être vide");
+    private final int id;
+    private String nom;
+    private String prenom;
+
+    public Adherent(int id, String nom, String prenom) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("L'identifiant de l'adherent doit etre positif.");
         }
-        this.identifiant = identifiant;
+        if (nom == null || nom.isBlank() || prenom == null || prenom.isBlank()) {
+            throw new IllegalArgumentException("Le nom et le prenom ne peuvent pas etre vides.");
+        }
+        this.id = id;
         this.nom = nom;
-
-        if (prenom != null) {
-            this.prenom = prenom;
-        } else {
-            this.prenom = "";
-        }
-
-        if (mail != null) {
-            this.mail = mail;
-        } else {
-            this.mail = "";
-        }
+        this.prenom = prenom;
     }
-    // Accesseurs
-    public int getIdentifiant() {
-        return identifiant;
+
+    public int getId() {
+        return id;
     }
 
     public String getNom() {
@@ -37,44 +29,25 @@ public class Adherent {
         return prenom;
     }
 
-    public String getMail() {
-        return mail;
+    public String getNomComplet() {
+        return prenom + " " + nom;
     }
 
-    // classe emprunter document
-    public boolean emprunter(Document doc) {
-        if (doc == null) {
-            System.out.println("Erreur : Document invalide.");
-            return false;
-        }
-
-        if (doc.estDisponible()) {
-            doc.changerDisponibilite(false);
-            System.out.println("Succès : " + nom + " " + prenom + " a emprunté le document '" + doc.getTitre() + "'.");
-            return true;
-        } else {
-            System.out.println("Échec emprunt : Le document " + doc.getTitre() + " est déjà emprunté !");
-            return false;
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Adherent adherent = (Adherent) o;
+        return id == adherent.id;
     }
 
-    // classe retourner document
-    public void retourner(Document doc) {
-        if (doc == null) {
-            System.out.println("Erreur : Document invalide.");
-            return;
-        }
-        doc.changerDisponibilite(true);
-        System.out.println("Retour effectué : " + nom + " " + prenom + " a rendu le document '" + doc.getTitre() + "'.");
-    }
-
-    // afficher l'adherent
-    public void afficher() {
-        System.out.println(this.toString());
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "Adherent [ID=" + identifiant + ", Nom=" + nom + " " + prenom + ", Mail=" + mail + "]";
+        return "Adherent [ID=" + id + ", Nom=" + prenom + " " + nom + "]";
     }
 }
